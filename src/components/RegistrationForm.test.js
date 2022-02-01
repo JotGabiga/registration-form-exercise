@@ -11,7 +11,7 @@ describe("<RegistrationForm />", () => {
     expect(root.querySelector("h1").textContent).toBe("Rejestracja");
 
     let fields = root.getElementsByClassName ("field");
-    expect(fields.length).toBe(4);
+    expect(fields.length).toBe(3);
 
     expect(fields[0].querySelector("label").textContent).toBe("Imię");
     expect(fields[0].querySelector("input").value).toBe("");
@@ -23,9 +23,6 @@ describe("<RegistrationForm />", () => {
       "Zgoda na newsletter"
     );
     expect(fields[2].querySelector("input").checked).toEqual(false);
-
-    expect(fields[3].querySelector("label").textContent).toBe("Email");
-    expect(fields[3].querySelector("input").value).toBe("");
 
     expect(root.querySelector('button').textContent).toBe("Wyślij")
   });
