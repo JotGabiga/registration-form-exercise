@@ -11,13 +11,19 @@ const RegistrationForm = () => {
       <div className="field">
         <label htmlFor="username">Imię</label>
         <br></br>
-        <input type="text" name="username" placeholder="Username" />
+        <input
+          id="username"
+          type="text"
+          name="username"
+          placeholder="Username"
+        />
       </div>
 
       <div className="field">
         <label htmlFor="password">Hasło</label>
         <br></br>
         <input
+          id="password"
           type="password"
           name="password"
           placeholder="Password"
@@ -40,7 +46,7 @@ const RegistrationForm = () => {
         <div className="field">
           <label htmlFor="email">Email</label>
           <br></br>
-          <input type="email" name="email" placeholder="Email" />
+          <input id="email" type="email" name="email" placeholder="Email" />
         </div>
       )}
 

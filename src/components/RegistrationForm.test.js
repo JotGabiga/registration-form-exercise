@@ -1,16 +1,17 @@
 import RegistrationForm from "./RegistrationForm";
 import ReactDOM from "react-dom";
 import React from "react";
+import { fireEvent, render, screen } from "@testing-library/react";
 
 describe("<RegistrationForm />", () => {
-  const root = document.createElement("div");
-  ReactDOM.render(<RegistrationForm />, root);
+ 
 
   test("renders the correct content", () => {
-    expect(root.querySelector('form')).toBeTruthy()
-    expect(root.querySelector("h1").textContent).toBe("Rejestracja");
+    const { container } = render(<RegistrationForm />);
+    expect(container.querySelector("form")).toBeTruthy();
+    expect(container.querySelector("h1").textContent).toBe("Rejestracja");
 
-    let fields = root.getElementsByClassName ("field");
+    const fields = container.getElementsByClassName("field");
     expect(fields.length).toBe(3);
 
     expect(fields[0].querySelector("label").textContent).toBe("Imię");
@@ -24,9 +25,21 @@ describe("<RegistrationForm />", () => {
     );
     expect(fields[2].querySelector("input").checked).toEqual(false);
 
-    expect(root.querySelector('button').textContent).toBe("Wyślij")
+    expect(container.querySelector("button").textContent).toBe("Wyślij");
   });
 
-  // Test 2
-  test("", () => {});
+  test("check if email field appears", () => {
+    const { container } = render(<RegistrationForm />);
+    const checkbox = screen.getByLabelText('Zgoda na newsletter');
+    const fields = container.getElementsByClassName("field");
+
+    expect(checkbox.checked).toEqual(false);
+    expect(fields.length).toBe(3);
+
+    fireEvent.click(checkbox)
+
+    expect(checkbox.checked).toEqual(true);
+    expect(fields.length).toBe(4);
+    expect(screen.getByLabelText('Email')).toBeTruthy();
+  });
 });
