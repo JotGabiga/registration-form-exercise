@@ -1,13 +1,48 @@
 import React, { useState } from "react";
 const RegistrationForm = () => {
-  const [checked, setChecket] = useState(false);
-  const handleChange = () => {
-    setChecket(!checked);
+  const [checked, setChecked] = useState(false);
+  const [user, setUser] = useState({ username: "", password: "" });
+  const [submitMessage, setSubmitMessage] = useState();
+
+  const [usernameError, setUsernameError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  //   wprowadzam osobny state dotyczący błędu dla każdego pola, aby można było w przyszłości pod każdym inputem dodać dla użytkownika informację o błędzie.
+
+  const handleChange = (event) => {
+    setUser({ ...user, [event.target.name]: event.target.value });
+  };
+
+  const handleCheckbox = () => {
+    setChecked(!checked);
+    if (checked !== false) {
+      delete user.email;
+    }
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    !isFormValid()
+      ? setSubmitMessage("Błąd walidacji")
+      : setSubmitMessage("Pomyślna rejestracja");
+  };
+  const isFormValid = () => {
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (user.username.trim() === "") {
+      setUsernameError(true);
+      return false;
+    }
+    if (user.password.trim() === "") {
+      setPasswordError(true);
+      return false;
+    }
+    if (checked && !emailRegex.test(user.email)) {
+      setEmailError(true);
+      return false;
+    }
+    return true;
   };
   return (
-    <form>
-      <h1>Rejestracja</h1>
-
+    <form onSubmit={handleSubmit}>
       <div className="field">
         <label htmlFor="username">Imię</label>
         <br></br>
@@ -16,6 +51,7 @@ const RegistrationForm = () => {
           type="text"
           name="username"
           placeholder="Username"
+          onChange={handleChange}
         />
       </div>
 
@@ -28,6 +64,7 @@ const RegistrationForm = () => {
           name="password"
           placeholder="Password"
           autoComplete="off"
+          onChange={handleChange}
         />
       </div>
 
@@ -37,7 +74,7 @@ const RegistrationForm = () => {
           id="newsletter"
           name="newsletter"
           checked={checked}
-          onChange={handleChange}
+          onChange={handleCheckbox}
         />
         <label htmlFor="newsletter">Zgoda na newsletter</label>
       </div>
@@ -46,11 +83,18 @@ const RegistrationForm = () => {
         <div className="field">
           <label htmlFor="email">Email</label>
           <br></br>
-          <input id="email" type="email" name="email" placeholder="Email" />
+          <input
+            id="email"
+            type="email"
+            name="email"
+            placeholder="Email"
+            onChange={handleChange}
+          />
         </div>
       )}
 
-      <button>Wyślij</button>
+      <button type="submit">Wyślij</button>
+      {submitMessage && <h5>{submitMessage}</h5>}
     </form>
   );
 };
